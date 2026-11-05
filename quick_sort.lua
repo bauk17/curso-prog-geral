@@ -1,6 +1,29 @@
 --[[
-  quick Sort using the last element as pivot
-  On an already sorted array, this choice produces highly unbalanced partitions. This leads to O(n^2) time complexity in the worst case
+  Quick Sort partitions the array by comparing each element with the pivot.
+  This partitioning process takes O(n) time for a partition containing n elements.
+
+  The original implementation always chooses the last element as the pivot.
+  On an already sorted array, this produces one partition with n - 1 elements
+  and another with 0 elements.
+
+  As a result, each recursive call reduces the problem size by only one element.
+  For a partition of n elements, the loop makes n - 1 comparisons.
+  Across recursive calls, the algorithm performs:
+
+  - First partition: n - 1 comparisons
+  - Second partition: n - 2 comparisons
+  - Third partition: n - 3 comparisons
+  - ...
+  - Last partition: 1 comparison
+
+  The total number of comparisons is:
+
+  (n - 1) + (n - 2) + ... + 1
+  = n(n - 1) / 2
+
+  Therefore, the total work grows proportionally to n²,
+  resulting in O(n²) worst-case time complexity.
+
 ]]
 
 local function quickSortRecursive(array, startIndex, endIndex)
@@ -93,11 +116,13 @@ local function randomizedQuickSort(array, startIndex, endIndex, depthLimit)
 end
 
 --[[
-  introsort
-  uses randomized pivots to improve partition balance.
-  When the recursion depth limit is reached, it switches to Heap Sort,
-  preventing quadratic worst-case behavior and guaranteeing O(n log n)
-  worst-case time complexity
+  INTROSORT:
+
+  Uses randomized pivots to improve the expected partition balance.
+
+  If the recursion depth exceeds the allowed limit, it switches to Heap Sort.
+  This prevents Quick Sort from continuing to produce highly unbalanced
+  partitions and guarantees O(n log n) worst-case time complexity.
 ]]
 
 local function introspectiveQuickSort(array, startIndex, endIndex)
@@ -165,7 +190,11 @@ local nLogNExample = { 1, 3, 2, 6, 5, 7, 4 }
 quickSortRecursive(nLogNExample, 1, #nLogNExample)
 print("Example with balanced partitions:", table.concat(nLogNExample, ", "))
 --[[
-  with reasonably balanced partitions, Quick Sort has O(n log n) average-case time complexity
+  With reasonably balanced partitions, each recursion level does O(n) work and
+  there are O(log n) levels, resulting in O(n log n) time.
+
+  Quick Sort also has O(n log n) average-case time complexity, though that
+  average-case result is a separate analysis from the balanced-partition example.
 ]]
 
 local size = 5000
