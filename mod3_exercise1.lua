@@ -20,6 +20,14 @@ local users = {}
 ]]
 
 
+
+function insertUser(name)
+  table.insert(users, {
+    id = #users,
+    name = string.lower(name)
+  })
+end
+
 function sortUsers()
   table.sort(users, function(a, b)
     return a.name < b.name
@@ -27,24 +35,13 @@ function sortUsers()
 end
 
 function registerUser(name)
-  local lowerName = string.lower(name)
-
-  table.insert(users, {
-    id = #users,
-    name = lowerName
-  })
-
+  insertUser(name)
   sortUsers()
 end
 
 function registerUsers(names)
   for _, name in ipairs(names) do
-    local lowerName = string.lower(name)
-
-    table.insert(users, {
-      id = #users,
-      name = lowerName
-    })
+    insertUser(name)
   end
 
   sortUsers()
